@@ -1,7 +1,12 @@
 import "./App.css";
+import Nav from "./Components/UI/Nav/Nav";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <Nav isAuth={true}></Nav>
+    </>
+  );
 }
 
 export default App;

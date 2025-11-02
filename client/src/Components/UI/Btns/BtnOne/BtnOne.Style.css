@@ -1,0 +1,56 @@
+#BtnOne {
+  box-sizing: border-box;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+  padding: 1em 1.8em;
+  background: #645bff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+#BtnOne .arrow-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#BtnOne .arrow {
+  margin-top: 1px;
+  width: 10px;
+  background: #645bff;
+  height: 2px;
+  position: relative;
+  transition: 0.2s;
+}
+
+#BtnOne .arrow::before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  display: inline-block;
+  top: -3px;
+  right: 3px;
+  padding: 3px;
+  transform: rotate(-45deg);
+  transition: 0.2s;
+}
+
+#BtnOne:hover {
+  background-color: #111;
+}
+
+#BtnOne:hover .arrow {
+  background: #fff;
+}
+
+#BtnOne:hover .arrow::before {
+  right: 0;
+}
