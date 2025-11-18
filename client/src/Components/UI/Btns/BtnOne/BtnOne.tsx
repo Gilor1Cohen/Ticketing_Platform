@@ -1,9 +1,9 @@
 import type { BtnProps } from "../../../../Types/UI.types";
 import "./BtnOne.Style.css";
 
-function BtnOne({ Text }: BtnProps) {
+function BtnOne({ Text, Type, Disabled }: BtnProps) {
   return (
-    <button id="BtnOne">
+    <button type={Type} className="BtnOne" disabled={Disabled}>
       {Text}
       <div className="arrow-wrapper">
         <div className="arrow" />

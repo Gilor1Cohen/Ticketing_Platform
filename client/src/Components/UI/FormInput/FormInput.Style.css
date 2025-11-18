@@ -1,0 +1,103 @@
+.FormInput-Div {
+  width: 100%;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.FormInput-Input {
+  width: 100%;
+  padding: 0.75rem 0.875rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 1px 2px rgba(17, 24, 39, 0.06);
+  outline: none;
+  transition: border-color 160ms ease, box-shadow 160ms ease,
+    background-color 160ms ease;
+}
+
+.FormInput-Input::placeholder {
+  color: #9ca3af;
+}
+
+.FormInput-Input:hover {
+  border-color: #cfd5df;
+}
+
+.FormInput-Input:focus {
+  border-color: #645bff;
+  box-shadow: 0 0 0 3px rgba(100, 91, 255, 0.18),
+    0 1px 2px rgba(17, 24, 39, 0.06);
+  background: #ffffff;
+}
+
+.FormInput-Input:disabled {
+  background: #f3f4f6;
+  color: #9ca3af;
+  cursor: not-allowed;
+}
+
+.FormInput-Input[aria-invalid="true"],
+.FormInput-Div.error .FormInput-Input {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.18);
+}
+
+.PasswordInput-Div {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.PasswordInput-Div .FormInput-Input {
+  padding-right: 2.5rem;
+}
+
+.PasswordInput-Toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  opacity: 0.7;
+  transition: opacity 160ms ease, transform 160ms ease;
+  user-select: none;
+}
+
+.PasswordInput-Toggle:hover {
+  opacity: 1;
+  transform: translateY(-50%) scale(1.05);
+}
+
+.FormInput-Error {
+  color: #ef4444;
+  margin-top: 6px;
+  font-size: 0.8rem;
+}
+
+@media (max-width: 600px) {
+  .FormInput-Div {
+    width: 100%;
+    max-width: 200px;
+  }
+  .FormInput-Input {
+    font-size: 0.95rem;
+  }
+  .FormInput-Error {
+    font-size: 0.75rem;
+  }
+  .PasswordInput-Toggle {
+    right: 8px;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  .FormInput-Input {
+    font-size: 1rem;
+  }
+}

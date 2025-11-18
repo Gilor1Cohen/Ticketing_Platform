@@ -1,33 +1,70 @@
+import { Link, useNavigate } from "react-router-dom";
 import type { NavProps } from "../../../Types/UI.types";
 import BtnOne from "../Btns/BtnOne/BtnOne";
 import BtnTwo from "../Btns/BtnTwo/BtnTwo";
+import axios from "axios";
+import type { AuthContextType, signoutRes } from "../../../Types/Auth.types";
 import "./Nav.Style.css";
 
-function Nav({ isAuth }: NavProps) {
+function Nav({ isAuth, setAuth }: NavProps) {
   return (
     <nav>
-      <div className="nav-container">
-        <h1 className="nav-logo">TICKETLY</h1>
-        <ul id="nav-ul">
-          <li className="nav-li">Sports</li>
-          <li className="nav-li">Concerts</li>
-          <li className="nav-li">Festivals</li>
-        </ul>
+      <div className="nav-container nav-left">
+        <Link to={"/"} className="nav-logo">
+          TICKETLY
+        </Link>
       </div>
 
-      <div className="nav-container">
-        {isAuth ? <NavContainerAuth /> : <NavContainerUnauth />}
+      <div className="nav-container nav-right">
+        {isAuth ? (
+          <NavContainerAuth setAuth={setAuth} />
+        ) : (
+          <NavContainerUnauth />
+        )}
       </div>
     </nav>
   );
 }
 
-function NavContainerAuth() {
+function NavContainerAuth({
+  setAuth,
+}: {
+  setAuth: React.Dispatch<React.SetStateAction<AuthContextType>>;
+}) {
+  const navigate = useNavigate();
   return (
     <>
-      <BtnTwo Text="My orders" />
-      <BtnTwo Text="Cart" />
-      <BtnOne Text="Sale a ticket" />
+      <Link to="/">
+        <BtnTwo Text="My orders" Type="button" Disabled={false} />
+      </Link>
+      <Link to="/">
+        <BtnTwo Text="Cart" Type="button" Disabled={false} />
+      </Link>
+      <Link to="/">
+        <BtnTwo Text="Sale a ticket" Type="button" Disabled={false} />
+      </Link>
+
+      <button
+        id="signout-btn"
+        onClick={async () => {
+          try {
+            const signout = await axios.post<signoutRes>(
+              "http://localhost:3001/signout",
+              {},
+              { withCredentials: true }
+            );
+
+            if (signout.status === 200) {
+              setAuth({ AuthState: false, UserId: null });
+              navigate("/");
+            }
+          } catch (error) {
+            console.error(error);
+          }
+        }}
+      >
+        sign out
+      </button>
     </>
   );
 }
@@ -35,8 +72,13 @@ function NavContainerAuth() {
 function NavContainerUnauth() {
   return (
     <>
-      <BtnTwo Text="Log In" />
-      <BtnOne Text="Sign up" />
+      <Link to="/login">
+        <BtnTwo Text="Log In" Type="button" Disabled={false} />
+      </Link>
+
+      <Link to="/signup">
+        <BtnOne Text="Sign up" Type="button" Disabled={false} />
+      </Link>
     </>
   );
 }

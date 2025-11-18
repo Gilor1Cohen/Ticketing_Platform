@@ -1,7 +1,8 @@
-#BtnTwo {
+.BtnTwo {
   border: none;
   color: black;
   font-size: 1rem;
   background: none;
   cursor: pointer;
+  text-decoration: none;
 }

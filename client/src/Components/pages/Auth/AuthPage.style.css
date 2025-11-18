@@ -1,0 +1,125 @@
+#AuthPage-Section {
+  height: 85vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 48px 16px;
+  background: linear-gradient(180deg, #f8fafc, #eef2f7);
+}
+
+#AuthPage-Title {
+  margin: 0 0 16px;
+  text-align: center;
+  font-weight: 800;
+  font-size: clamp(26px, 4vw, 40px);
+  color: #111827;
+  letter-spacing: 0.2px;
+}
+
+#AuthPage-Form {
+  width: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.25rem;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(17, 24, 39, 0.08);
+}
+
+.AuthPage-Error {
+  margin-top: 12px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255, 71, 87, 0.08);
+  border: 1px solid rgba(255, 71, 87, 0.6);
+  color: #ff4757;
+  font-size: 0.9rem;
+  font-weight: 500;
+  line-height: 1.4;
+  position: relative;
+  padding-left: 38px;
+}
+
+.AuthPage-Error::before {
+  content: "!";
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ff4757;
+  color: #fff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.AuthPage-Error {
+  animation: authErrorFadeIn 0.25s ease-out, authErrorPop 0.25s ease-out;
+}
+
+@keyframes authErrorFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes authErrorPop {
+  0% {
+    transform: scale(0.98);
+  }
+  60% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 600px) {
+  #AuthPage-Section {
+    width: 100vw;
+    height: 100vh;
+    padding: 32px 12px;
+  }
+
+  #AuthPage-Title {
+    margin-top: 35%;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  #AuthPage-Form {
+    width: 100%;
+    padding: 1rem;
+    gap: 0.75rem;
+    box-shadow: none;
+    border: none;
+  }
+}
+
+@media (min-width: 601px) and (max-width: 1024px) {
+  #AuthPage-Form {
+    width: 70vw;
+    padding: 1.25rem 2rem;
+    gap: 1rem;
+  }
+
+  #AuthPage-Title {
+    font-size: clamp(28px, 3.5vw, 36px);
+  }
+}
