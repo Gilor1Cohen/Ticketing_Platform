@@ -1,12 +1,15 @@
-import { createContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
-import type { AuthContextType, CurrentUserRes } from "./Types/Auth.types";
+import type { CurrentUserRes } from "./Types/Auth.types";
 import Nav from "./Components/UI/Nav/Nav";
 import axios from "axios";
 import Routing from "./Routing/Routing";
+import { AuthContext } from "./Context/AuthContext";
 import "./App.css";
 
 function App() {
+  const auth = useContext(AuthContext);
+
   useEffect(() => {
     async function checkAuth() {
       try {
@@ -17,29 +20,24 @@ function App() {
           }
         );
 
-        if (check.status === 200)
-          setAuth({ AuthState: true, UserId: check.data.currentUser.UserId });
+        if (check.status === 200) {
+          auth ? auth.login(check.data.currentUser.UserId) : null;
+        }
       } catch (error) {
-        setAuth({ AuthState: false, UserId: null });
+        auth ? auth.logout : null;
       }
     }
 
     checkAuth();
   }, []);
 
-  const [auth, setAuth] = useState<AuthContextType>({
-    AuthState: false,
-    UserId: null,
-  });
-
-  const AuthContext = createContext<AuthContextType>(auth);
-
   return (
     <BrowserRouter>
-      <AuthContext.Provider value={auth}>
-        <Nav isAuth={auth.AuthState} setAuth={setAuth}></Nav>
-        <Routing auth={auth} setAuth={setAuth} />
-      </AuthContext.Provider>
+      <Nav
+        isAuth={auth ? auth.auth.AuthState : null}
+        logout={auth ? auth.logout : null}
+      />
+      <Routing />;
     </BrowserRouter>
   );
 }

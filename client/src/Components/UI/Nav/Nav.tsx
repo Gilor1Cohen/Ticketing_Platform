@@ -3,12 +3,12 @@ import type { NavProps } from "../../../Types/UI.types";
 import BtnOne from "../Btns/BtnOne/BtnOne";
 import BtnTwo from "../Btns/BtnTwo/BtnTwo";
 import axios from "axios";
-import type { AuthContextType, signoutRes } from "../../../Types/Auth.types";
+import type { signoutRes } from "../../../Types/Auth.types";
 import "./Nav.Style.css";
 
-function Nav({ isAuth, setAuth }: NavProps) {
+function Nav({ isAuth, logout }: NavProps) {
   return (
-    <nav>
+    <nav id="nav">
       <div className="nav-container nav-left">
         <Link to={"/"} className="nav-logo">
           TICKETLY
@@ -16,37 +16,31 @@ function Nav({ isAuth, setAuth }: NavProps) {
       </div>
 
       <div className="nav-container nav-right">
-        {isAuth ? (
-          <NavContainerAuth setAuth={setAuth} />
-        ) : (
-          <NavContainerUnauth />
-        )}
+        {isAuth ? <NavContainerAuth logout={logout} /> : <NavContainerUnauth />}
       </div>
     </nav>
   );
 }
 
-function NavContainerAuth({
-  setAuth,
-}: {
-  setAuth: React.Dispatch<React.SetStateAction<AuthContextType>>;
-}) {
+function NavContainerAuth({ logout }: { logout: (() => void) | null }) {
   const navigate = useNavigate();
   return (
     <>
-      <Link to="/">
-        <BtnTwo Text="My orders" Type="button" Disabled={false} />
+      <Link to="/my">
+        <BtnTwo Text="My tickets" Type="button" Disabled={false} />
+      </Link>
+      <Link to="/sale">
+        <BtnTwo Text="Sale a ticket" Type="button" Disabled={false} />
       </Link>
       <Link to="/">
         <BtnTwo Text="Cart" Type="button" Disabled={false} />
       </Link>
-      <Link to="/">
-        <BtnTwo Text="Sale a ticket" Type="button" Disabled={false} />
-      </Link>
 
-      <button
-        id="signout-btn"
-        onClick={async () => {
+      <BtnOne
+        Text="Sign Out"
+        Type="button"
+        Disabled={false}
+        OnClick={async () => {
           try {
             const signout = await axios.post<signoutRes>(
               "http://localhost:3001/signout",
@@ -55,16 +49,15 @@ function NavContainerAuth({
             );
 
             if (signout.status === 200) {
-              setAuth({ AuthState: false, UserId: null });
+              logout ? logout() : null;
               navigate("/");
+              window.location.reload();
             }
           } catch (error) {
-            console.error(error);
+            return;
           }
         }}
-      >
-        sign out
-      </button>
+      />
     </>
   );
 }

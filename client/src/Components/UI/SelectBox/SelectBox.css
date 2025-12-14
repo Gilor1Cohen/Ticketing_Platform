@@ -1,0 +1,46 @@
+#SelectBox {
+  padding: 0.6rem 1.2rem;
+  padding-right: 2.4rem;
+
+  border-radius: 999px;
+  border: 1px solid #d1d5db;
+
+  background-color: #ffffff;
+  color: #111827;
+  font-size: 0.95rem;
+  font-weight: 500;
+
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+
+  background-image: linear-gradient(45deg, transparent 50%, #6b7280 50%),
+    linear-gradient(135deg, #6b7280 50%, transparent 50%);
+  background-position: calc(100% - 16px) calc(50% - 4px),
+    calc(100% - 11px) calc(50% - 4px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+
+  transition: border-color 0.2s ease, background-color 0.2s ease,
+    box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+#SelectBox:hover {
+  background-color: #f3f4f6;
+  border-color: #9ca3af;
+}
+
+#SelectBox:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.25);
+  background-color: #ffffff;
+}
+
+#SelectBox:active {
+  transform: scale(0.98);
+}
+
+.SelectBox-option {
+  font-size: 0.95rem;
+  padding: 0.4rem 0.6rem;
+}

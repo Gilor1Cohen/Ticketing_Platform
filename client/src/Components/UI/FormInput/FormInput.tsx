@@ -3,44 +3,67 @@ import type { FormInputProps } from "../../../Types/UI.types";
 import "./FormInput.Style.css";
 
 function FormInput({
+  formType,
   type,
   placeholder,
   register,
-  name,
+  errors,
   options,
-  error,
+  name,
 }: FormInputProps) {
-  const [isView, setIsView] = useState<boolean>(false);
+  const [isView, setIsView] = useState(false);
 
-  return (
-    <div className="FormInput-Div">
-      {type !== "password" && (
+  function renderInput() {
+    if (formType === "Auth") {
+      return (
         <input
           className="FormInput-Input"
-          type={type}
+          type={
+            type === "password" && !isView
+              ? "password"
+              : type == "password"
+              ? "text"
+              : type
+          }
           placeholder={placeholder}
           {...register(name, options)}
         />
-      )}
+      );
+    }
 
-      {type == "password" && (
+    return (
+      <input
+        className="FormInput-Input"
+        type={
+          type === "password" && !isView
+            ? "password"
+            : type == "password"
+            ? "text"
+            : type
+        }
+        placeholder={placeholder}
+        {...register(name, options)}
+      />
+    );
+  }
+
+  return (
+    <div className="FormInput-Div">
+      {type !== "password" && renderInput()}
+
+      {type === "password" && (
         <div className="PasswordInput-Div">
-          <input
-            className="FormInput-Input"
-            type={isView ? "text" : "password"}
-            placeholder={placeholder}
-            {...register(name, options)}
-          />
+          {renderInput()}
           <span
             className="PasswordInput-Toggle"
-            onClick={() => setIsView(!isView)}
+            onClick={() => setIsView((prev) => !prev)}
           >
             {isView ? "🙈" : "👁️"}
           </span>
         </div>
       )}
 
-      {error && <p className="FormInput-Error">{error}</p>}
+      {errors && <p className="FormInput-Error">{errors}</p>}
     </div>
   );
 }

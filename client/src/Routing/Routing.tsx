@@ -1,23 +1,29 @@
 import { Route, Routes } from "react-router-dom";
 import HomePage from "../Components/pages/Home/HomePage";
 import AuthPage from "../Components/pages/Auth/AuthPage";
-import type { RoutingProps } from "../Types/UI.types";
+import { useContext } from "react";
+import SaleTicketsPage from "../Components/pages/SaleTickets/SaleTickets";
+import { AuthContext } from "../Context/AuthContext";
+import MyTicketsPage from "../Components/pages/MyTickets/MyTickets";
 
-export default function Routing({ auth, setAuth }: RoutingProps) {
+export default function Routing() {
+  const Auth = useContext(AuthContext);
+
   return (
     <Routes>
-      {auth.AuthState ? (
+      {Auth?.auth.AuthState ? (
         <>
           <Route path="/" element={<HomePage />} />
           <Route path="/orders" element={<HomePage />} />
           <Route path="/cart" element={<HomePage />} />
-          <Route path="/sell" element={<HomePage />} />
+          <Route path="/sale" element={<SaleTicketsPage />} />
+          <Route path="/my" element={<MyTicketsPage />} />
         </>
       ) : (
         <>
           <Route path="/" element={<HomePage />} />
-          <Route path="/signup" element={<AuthPage setAuth={setAuth} />} />
-          <Route path="/login" element={<AuthPage setAuth={setAuth} />} />
+          <Route path="/signup" element={<AuthPage />} />
+          <Route path="/login" element={<AuthPage />} />
         </>
       )}
     </Routes>

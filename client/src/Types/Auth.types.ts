@@ -1,6 +1,12 @@
-import type React from "react";
+import type { RegisterOptions, UseFormRegister } from "react-hook-form";
 
 interface AuthContextType {
+  auth: AuthProviderUseState;
+  login: (userId: string) => void;
+  logout: () => void;
+}
+
+interface AuthProviderUseState {
   AuthState: boolean;
   UserId: string | null;
 }
@@ -11,8 +17,14 @@ interface AuthFormType {
   Password: string;
 }
 
-interface AuthPageProps {
-  setAuth: React.Dispatch<React.SetStateAction<AuthContextType>>;
+interface AuthFormInputProps {
+  formType: "Auth";
+  type: string;
+  placeholder: string;
+  register: UseFormRegister<AuthFormType>;
+  name: keyof AuthFormType;
+  options: RegisterOptions<AuthFormType, keyof AuthFormType>;
+  errors?: string;
 }
 
 interface AuthRes {
@@ -36,8 +48,9 @@ interface signoutRes {
 export type {
   AuthContextType,
   AuthFormType,
-  AuthPageProps,
   AuthRes,
   CurrentUserRes,
   signoutRes,
+  AuthFormInputProps,
+  AuthProviderUseState,
 };

@@ -1,17 +1,14 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import FormInput from "../../UI/FormInput/FormInput";
 import BtnOne from "../../UI/Btns/BtnOne/BtnOne";
-import type {
-  AuthFormType,
-  AuthPageProps,
-  AuthRes,
-} from "../../../Types/Auth.types";
+import type { AuthFormType, AuthRes } from "../../../Types/Auth.types";
 import "./AuthPage.style.css";
+import { AuthContext } from "../../../Context/AuthContext";
 import axios from "axios";
 
-function AuthPage({ setAuth }: AuthPageProps) {
+function AuthPage() {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -21,6 +18,8 @@ function AuthPage({ setAuth }: AuthPageProps) {
 
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const auth = useContext(AuthContext);
 
   const {
     handleSubmit,
@@ -49,7 +48,7 @@ function AuthPage({ setAuth }: AuthPageProps) {
 
       if (res.status === 200) {
         setLoading(false);
-        setAuth({ AuthState: true, UserId: res.data.UserId });
+        auth ? auth.login(res.data.UserId) : null;
         navigate("/");
       }
     } catch (error: any) {
@@ -66,6 +65,7 @@ function AuthPage({ setAuth }: AuthPageProps) {
       <form id="AuthPage-Form" onSubmit={handleSubmit(onFormSubmit)}>
         {title === "Sign Up" && (
           <FormInput
+            formType="Auth"
             type="text"
             placeholder="User Name"
             register={register}
@@ -74,18 +74,26 @@ function AuthPage({ setAuth }: AuthPageProps) {
               required: "UserName is required",
               minLength: { value: 4, message: "At least 4 characters" },
             }}
-            error={errors.UserName?.message}
+            errors={errors.UserName?.message}
           />
         )}
         <FormInput
+          formType="Auth"
           type="email"
           placeholder="Email"
           register={register}
           name="Email"
-          options={{ required: "Email is required" }}
-          error={errors.Email?.message}
+          options={{
+            required: "Email is required",
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i,
+              message: "Invalid email address",
+            },
+          }}
+          errors={errors.Email?.message}
         />
         <FormInput
+          formType="Auth"
           type="password"
           placeholder="Password"
           register={register}
@@ -98,7 +106,7 @@ function AuthPage({ setAuth }: AuthPageProps) {
               message: "Use a number and a capital letter",
             },
           }}
-          error={errors.Password?.message}
+          errors={errors.Password?.message}
         />
 
         <BtnOne Text={title} Type="submit" Disabled={!isValid || loading} />

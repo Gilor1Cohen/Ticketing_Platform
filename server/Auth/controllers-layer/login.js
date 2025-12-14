@@ -22,8 +22,6 @@ router.post("/", async (req, res) => {
       UserId: login.UserId,
     });
   } catch (error) {
-    console.log(error);
-
     handleError(error, res);
   }
 });

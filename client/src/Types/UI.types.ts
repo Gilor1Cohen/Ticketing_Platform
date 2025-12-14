@@ -1,37 +1,47 @@
-import type { UseFormRegister } from "react-hook-form";
-import type { AuthContextType, AuthFormType } from "./Auth.types";
+import type { AuthFormInputProps } from "./Auth.types";
 import type React from "react";
+import type {
+  Ticket,
+  TicketsFormInputProps,
+  TicketType,
+} from "./Tickets.types";
 
 interface NavProps {
-  isAuth: boolean;
-  setAuth: React.Dispatch<React.SetStateAction<AuthContextType>>;
+  isAuth: boolean | null;
+  logout: (() => void) | null;
 }
 
 interface BtnProps {
   Text: string;
   Type: "button" | "submit" | "reset";
   Disabled: boolean;
+  OnClick?: () => void;
 }
 
 interface FormInputOptions {
   required: string;
-  minLength?: { value: number; message: string };
-  maxLength?: { value: number; message: string };
+  minLength?: { value: number | string; message: string };
+  maxLength?: { value: number | string; message: string };
   pattern?: { value: RegExp; message: string };
 }
 
-interface FormInputProps {
-  type: string;
-  placeholder: string;
-  register: UseFormRegister<AuthFormType>;
-  name: "Email" | "Password" | "UserName";
-  options: FormInputOptions;
-  error?: string;
+type FormInputProps = AuthFormInputProps | TicketsFormInputProps;
+
+interface TicketCardProps {
+  Ticket: Ticket;
+  Auth: boolean;
 }
 
-interface RoutingProps {
-  auth: AuthContextType;
-  setAuth: React.Dispatch<React.SetStateAction<AuthContextType>>;
+interface SelectBoxProps {
+  setPage?: React.Dispatch<React.SetStateAction<number>>;
+  setCategory: React.Dispatch<React.SetStateAction<TicketType>>;
 }
 
-export type { NavProps, BtnProps, FormInputProps, RoutingProps };
+export type {
+  NavProps,
+  BtnProps,
+  FormInputProps,
+  TicketCardProps,
+  FormInputOptions,
+  SelectBoxProps,
+};
