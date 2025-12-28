@@ -1,3 +1,186 @@
 #MyTicketsPage {
-  padding-top: 5rem;
+  padding-top: 7.5rem;
+  padding-inline: 1rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  align-items: center;
+  justify-content: center;
+}
+
+#MyTicketsPage > h1 {
+  width: 100%;
+  max-width: 1100px;
+  margin: 0;
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+.switch {
+  color: white;
+  width: fit-content;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  border-radius: 9999px;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  position: relative;
+  isolation: isolate;
+}
+
+.switch input[type="checkbox"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+.switch > span {
+  display: grid;
+  place-content: center;
+  transition: opacity 300ms ease-in-out 150ms;
+  padding: 1rem 2rem;
+}
+
+.switch::before,
+.switch::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  transition: inset 150ms ease-in-out;
+}
+
+.switch::before {
+  background-color: rgba(12, 74, 110, 0.65);
+  inset: 4px 50% 4px 4px;
+  transition: inset 500ms cubic-bezier(0.47, 1.64, 0.41, 0.8),
+    background-color 500ms ease-in-out;
+  z-index: -1;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.3), 0 1px rgba(255, 255, 255, 0.3);
+}
+
+.switch::after {
+  background-color: #70a9c5;
+  inset: 0;
+  z-index: -2;
+}
+
+.switch:focus-within::after {
+  inset: -0.25rem;
+}
+
+.switch:has(input:checked):hover > span:first-of-type,
+.switch:has(input:not(:checked)):hover > span:last-of-type {
+  opacity: 1;
+  transition-delay: 0ms;
+  transition-duration: 100ms;
+}
+
+.switch:has(input:checked):hover::before {
+  inset: 4px 4px 4px 45%;
+}
+
+.switch:has(input:not(:checked)):hover::before {
+  inset: 4px 45% 4px 4px;
+}
+
+.switch:has(input:checked)::before {
+  background-color: rgba(12, 74, 110, 1);
+  inset: 4px 4px 4px 50%;
+}
+
+.switch > span:last-of-type,
+.switch > input:checked + span:first-of-type {
+  opacity: 0.75;
+}
+
+.switch > input:checked ~ span:last-of-type {
+  opacity: 1;
+}
+
+#MyTicketsPage .dataDiv {
+  width: 100%;
+  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+}
+
+#MyTicketsPage .dataDiv > p {
+  margin: 0;
+  padding: 0.9rem 1rem;
+  border-radius: 14px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+#MyTicketsPage .dataDiv > p:not(.error) {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+#MyTicketsPage .OrderDiv {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  padding: 1rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.22);
+}
+
+#MyTicketsPage .OrderDiv > p {
+  margin: 0;
+  padding: 0.75rem 0.9rem;
+  border-radius: 14px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  opacity: 0.92;
+}
+
+#MyTicketsPage .OrderDiv > :not(p) {
+  margin-top: 0.25rem;
+}
+
+#MyTicketsPage .dataDiv > :not(.OrderDiv) + :not(.OrderDiv) {
+  margin-top: 0.75rem;
+}
+
+@media (max-width: 640px) {
+  #MyTicketsPage {
+    padding-inline: 0.75rem;
+    padding-top: 10rem;
+  }
+
+  #MyTicketsPage .dataDiv {
+    padding: 0.8rem;
+    border-radius: 16px;
+  }
+
+  #MyTicketsPage .OrderDiv {
+    padding: 0.85rem;
+    border-radius: 16px;
+  }
+
+  #MyTicketsPage .switch > span {
+    padding: 0.85rem 1.2rem;
+  }
 }

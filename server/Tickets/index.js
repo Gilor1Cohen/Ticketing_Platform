@@ -24,6 +24,10 @@ app.use("/AddTickets", require("./controllers-layer/AddTickets"));
 
 app.use("/UpdateTickets", require("./controllers-layer/UpdateTickets"));
 
+app.use("/GetMyTickets", require("./controllers-layer/GetMyTickets"));
+
+app.use("/DeleteMyTicket", require("./controllers-layer/DeleteMyTicket"));
+
 app
   .listen(3002, () => {
     console.log(`Tickets listening on port 3002`);

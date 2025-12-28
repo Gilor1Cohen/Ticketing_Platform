@@ -32,7 +32,7 @@ function NavContainerAuth({ logout }: { logout: (() => void) | null }) {
       <Link to="/sale">
         <BtnTwo Text="Sale a ticket" Type="button" Disabled={false} />
       </Link>
-      <Link to="/">
+      <Link to="/cart">
         <BtnTwo Text="Cart" Type="button" Disabled={false} />
       </Link>
 

@@ -10,6 +10,7 @@ function FormInput({
   errors,
   options,
   name,
+  value,
 }: FormInputProps) {
   const [isView, setIsView] = useState(false);
 
@@ -27,6 +28,7 @@ function FormInput({
           }
           placeholder={placeholder}
           {...register(name, options)}
+          defaultValue={value}
         />
       );
     }
@@ -43,6 +45,7 @@ function FormInput({
         }
         placeholder={placeholder}
         {...register(name, options)}
+        defaultValue={value}
       />
     );
   }

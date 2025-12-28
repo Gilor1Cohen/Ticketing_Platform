@@ -2,12 +2,12 @@ const express = require("express");
 const router = express.Router();
 const { handleError } = require("../../common/handleError");
 const { currentUser } = require("../../common/currentUser");
-const { updateTicket } = require("../business-logic-layer/updateTicket");
+const { deleteTicketFromDB } = require("../business-logic-layer/deleteTicket");
 
-router.put("/", currentUser, async (req, res) => {
+router.delete("/", currentUser, async (req, res) => {
   try {
+    const { TicketId } = req.query;
     const UserId = req.currentUser.UserId;
-    const { Title, Price, Date, Type, _id } = req.body;
 
     if (!UserId) {
       const error = new Error("Unauthorized: User is not authenticated");
@@ -16,19 +16,19 @@ router.put("/", currentUser, async (req, res) => {
       throw error;
     }
 
-    if (!Title || !Price || !Date || !Type || !_id) {
+    if (!TicketId) {
       const error = new Error("Bad Request: Missing required fields");
       error.isClientError = true;
       error.statusCode = 400;
       throw error;
     }
 
-    const update = await updateTicket(_id, Title, Price, Date, Type);
+    const deleteTicket = await deleteTicketFromDB(TicketId);
 
-    if (!update._id) {
-      const error = new Error("Ticket update failed");
+    if (!deleteTicket._id) {
+      const error = new Error("Ticket not found");
       error.isClientError = true;
-      error.statusCode = 500;
+      error.statusCode = 404;
       throw error;
     }
 

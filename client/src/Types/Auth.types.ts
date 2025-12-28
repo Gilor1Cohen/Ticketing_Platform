@@ -25,6 +25,7 @@ interface AuthFormInputProps {
   name: keyof AuthFormType;
   options: RegisterOptions<AuthFormType, keyof AuthFormType>;
   errors?: string;
+  value?: string;
 }
 
 interface AuthRes {

@@ -76,6 +76,7 @@ function HomePage() {
                   Ticket={ticket}
                   Auth={Auth ? Auth.auth.AuthState : false}
                   key={ticket._id}
+                  isCart={false}
                 />
               );
             })}

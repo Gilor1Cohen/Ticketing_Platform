@@ -1,64 +1,35 @@
-import { useContext, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 import type {
-  TicketAddRes,
+  Ticket,
   TicketForm,
   TicketType,
 } from "../../../Types/Tickets.types";
-import FormInput from "../../UI/FormInput/FormInput";
+import { useForm } from "react-hook-form";
 import BtnOne from "../../UI/Btns/BtnOne/BtnOne";
+import FormInput from "../../UI/FormInput/FormInput";
+import { useContext, useState } from "react";
 import SelectBox from "../../UI/SelectBox/SelectBox";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import "./SaleTickets.css";
+import "./UpdatePage.css";
 import { AuthContext } from "../../../Context/AuthContext";
 
-function SaleTicketsPage() {
+function UpdatePage() {
+  const Auth = useContext(AuthContext);
+
   const navigate = useNavigate();
-  const auth = useContext(AuthContext);
+
+  const location = useLocation();
+  const state = location.state as { Ticket: Ticket };
+
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [category, setCategory] = useState<TicketType>("Sport");
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<TicketForm>({ mode: "all" });
-
-  const [category, setCategory] = useState<TicketType>("Sport");
-  const [loading, setLoading] = useState<boolean>(false);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    if (!auth?.auth.AuthState) {
-      navigate("/login");
-    }
-  }, [auth]);
-
-  async function onSubmit(data: TicketForm) {
-    try {
-      setLoading(true);
-      setError(null);
-      data = { ...data, Type: category };
-      const add = await axios.post<TicketAddRes>(
-        "http://localhost:3002/AddTickets",
-        data,
-        { withCredentials: true }
-      );
-
-      if (add.status === 200) {
-        setLoading(false);
-        alert("Ticket added successfully");
-      }
-    } catch (error) {
-      setLoading(false);
-      if (axios.isAxiosError(error) && error.response?.status === 401) {
-        if (auth) auth.logout();
-        navigate("/login");
-        return;
-      }
-
-      setError("Failed to add ticket. Please try again.");
-    }
-  }
 
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -68,10 +39,52 @@ function SaleTicketsPage() {
   future.setFullYear(future.getFullYear() + 1);
   const futureMax = future.toISOString().slice(0, 16);
 
+  async function onSubmit(data: TicketForm) {
+    try {
+      setLoading(true);
+      setError(null);
+      data = { ...data, Type: category, _id: state?.Ticket._id };
+      if (
+        data.Date == state?.Ticket.Date &&
+        data.Price == state?.Ticket.Price &&
+        data.Title == state?.Ticket.Title &&
+        data.Type == state?.Ticket.Type
+      ) {
+        return;
+      }
+
+      const res = await axios.put<string>(
+        "http://localhost:3002/UpdateTickets",
+        data,
+        {
+          withCredentials: true,
+        }
+      );
+
+      setLoading(false);
+
+      if (res.status === 200) {
+        setLoading(false);
+        navigate("/my");
+      }
+    } catch (error) {
+      setLoading(false);
+      if (axios.isAxiosError(error) && error.response) {
+        if (error.response?.status === 401) {
+          if (Auth) Auth.logout();
+          navigate("/login");
+          return;
+        }
+
+        setError(error.response.data.message);
+      }
+    }
+  }
+
   return (
-    <div id="SaleTicketsPage">
-      <h1 id="SaleTickets-h">Sale a ticket</h1>
-      <form id="SaleTickets-form" onSubmit={handleSubmit(onSubmit)}>
+    <section id="UpdatePage">
+      <h1 id="UpdatePage-h">Update Tickets</h1>
+      <form id="UpdatePage-form" onSubmit={handleSubmit(onSubmit)}>
         <FormInput
           formType="Ticket"
           type="text"
@@ -85,6 +98,7 @@ function SaleTicketsPage() {
               message: "Title must be at least 5 characters",
             },
           }}
+          value={state?.Ticket.Title}
           errors={errors.Title?.message}
         />
         <FormInput
@@ -98,6 +112,7 @@ function SaleTicketsPage() {
             min: { value: 1, message: "Price must be at least 1" },
           }}
           errors={errors.Price?.message}
+          value={`${state?.Ticket.Price}`}
         />
 
         <SelectBox setCategory={setCategory} />
@@ -119,6 +134,7 @@ function SaleTicketsPage() {
               message: "Date is too far in the future",
             },
           }}
+          value={state?.Ticket.Date.replace(":00.000Z", "")}
           errors={errors.Date?.message}
         />
         <BtnOne
@@ -130,8 +146,8 @@ function SaleTicketsPage() {
         {loading && <p>Loading...</p>}
         {error && <p className="error-message">{error}</p>}
       </form>
-    </div>
+    </section>
   );
 }
 
-export default SaleTicketsPage;
+export default UpdatePage;

@@ -6,10 +6,9 @@ interface Ticket {
   _id: string;
   Price: number;
   Type: TicketType;
-  UserId: string;
-  OrderId: string | null;
   Date: string;
   Title: string;
+  OrderId?: string;
 }
 
 interface TicketsRes {
@@ -18,6 +17,7 @@ interface TicketsRes {
 }
 
 interface TicketForm {
+  _id?: string;
   Title: string;
   Price: number;
   Type?: TicketType;
@@ -32,6 +32,16 @@ interface TicketsFormInputProps {
   name: keyof TicketForm;
   options: RegisterOptions<TicketForm, keyof TicketForm>;
   errors?: string;
+  value?: string;
+}
+
+interface TicketAddRes {
+  message: string;
+}
+
+interface OrderDto {
+  Items: Ticket[];
+  CreatedAt: string;
 }
 
 export type {
@@ -40,4 +50,6 @@ export type {
   TicketForm,
   TicketsFormInputProps,
   TicketType,
+  TicketAddRes,
+  OrderDto,
 };

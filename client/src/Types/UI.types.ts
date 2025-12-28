@@ -30,6 +30,8 @@ type FormInputProps = AuthFormInputProps | TicketsFormInputProps;
 interface TicketCardProps {
   Ticket: Ticket;
   Auth: boolean;
+  isCart: boolean;
+  MyTicket?: boolean;
 }
 
 interface SelectBoxProps {
