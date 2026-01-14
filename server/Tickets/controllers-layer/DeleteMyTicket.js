@@ -23,7 +23,7 @@ router.delete("/", currentUser, async (req, res) => {
       throw error;
     }
 
-    const deleteTicket = await deleteTicketFromDB(TicketId);
+    const deleteTicket = await deleteTicketFromDB(UserId, TicketId);
 
     if (!deleteTicket._id) {
       const error = new Error("Ticket not found");

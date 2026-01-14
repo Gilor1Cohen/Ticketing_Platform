@@ -23,7 +23,7 @@ router.put("/", currentUser, async (req, res) => {
       throw error;
     }
 
-    const update = await updateTicket(_id, Title, Price, Date, Type);
+    const update = await updateTicket(_id, Title, Price, Date, Type, UserId);
 
     if (!update._id) {
       const error = new Error("Ticket update failed");
@@ -32,7 +32,13 @@ router.put("/", currentUser, async (req, res) => {
       throw error;
     }
 
-    res.status(200).send("OK");
+    res.status(200).json({
+      _id,
+      Price,
+      Type,
+      Date,
+      Title,
+    });
   } catch (error) {
     handleError(error, res);
   }

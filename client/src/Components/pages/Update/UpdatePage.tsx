@@ -12,9 +12,11 @@ import SelectBox from "../../UI/SelectBox/SelectBox";
 import axios from "axios";
 import "./UpdatePage.css";
 import { AuthContext } from "../../../Context/AuthContext";
+import { CartContext } from "../../../Context/CartContext";
 
 function UpdatePage() {
   const Auth = useContext(AuthContext);
+  const Cart = useContext(CartContext);
 
   const navigate = useNavigate();
 
@@ -53,7 +55,7 @@ function UpdatePage() {
         return;
       }
 
-      const res = await axios.put<string>(
+      const res = await axios.put<Ticket>(
         "http://localhost:3002/UpdateTickets",
         data,
         {
@@ -64,6 +66,8 @@ function UpdatePage() {
       setLoading(false);
 
       if (res.status === 200) {
+        Cart?.removeFromCart(res.data._id);
+        Cart?.addToCart(res.data);
         setLoading(false);
         navigate("/my");
       }

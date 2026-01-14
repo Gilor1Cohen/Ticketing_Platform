@@ -37,6 +37,29 @@ function NavContainerAuth({ logout }: { logout: (() => void) | null }) {
       </Link>
 
       <BtnOne
+        Text="Delete Profile"
+        Type="button"
+        Disabled={false}
+        OnClick={async () => {
+          try {
+            const signout = await axios.post<signoutRes>(
+              "http://localhost:3001/DeleteProfile",
+              {},
+              { withCredentials: true }
+            );
+
+            if (signout.status === 200) {
+              logout ? logout() : null;
+              navigate("/");
+              window.location.reload();
+            }
+          } catch (error) {
+            return;
+          }
+        }}
+      />
+
+      <BtnOne
         Text="Sign Out"
         Type="button"
         Disabled={false}

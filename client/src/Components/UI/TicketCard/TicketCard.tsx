@@ -19,7 +19,7 @@ function TicketCard({ Ticket, Auth, isCart, MyTicket }: TicketCardProps) {
   async function SaveCart(Ticket: Ticket) {
     try {
       const add = await axios.post<CartDataResponse>(
-        "http://localhost:3003/SaveCart",
+        "http://localhost:3004/SaveCart",
         { Ticket },
         { withCredentials: true }
       );
@@ -50,7 +50,7 @@ function TicketCard({ Ticket, Auth, isCart, MyTicket }: TicketCardProps) {
   async function removeFromCart(TicketId: string) {
     try {
       const remove = await axios.post<CartDataResponse>(
-        "http://localhost:3003/RemoveFromCart",
+        "http://localhost:3004/RemoveFromCart",
         { TicketId },
         { withCredentials: true }
       );

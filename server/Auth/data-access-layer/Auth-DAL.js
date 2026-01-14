@@ -38,4 +38,17 @@ async function getUserData(Email) {
   }
 }
 
-module.exports = { isEmailExists, createUser, getUserData };
+async function DeleteUserFormDB(UserId) {
+  try {
+    const res = await User.deleteOne({ _id: UserId });
+
+    return res.deletedCount === 1;
+  } catch (error) {
+    error.message = "Failed to delete user";
+    error.isClientError = false;
+    error.statusCode = 500;
+    throw error;
+  }
+}
+
+module.exports = { isEmailExists, createUser, getUserData, DeleteUserFormDB };

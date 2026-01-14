@@ -41,4 +41,17 @@ async function userOrders(UserId) {
   }
 }
 
-module.exports = { createOrder, userOrders };
+async function deleteUserOrders(UserId) {
+  try {
+    const result = await OrdersSchema.deleteMany({ UserId });
+
+    return result;
+  } catch (error) {
+    error.message = "Database Error: Unable to delete user orders";
+    error.isClientError = false;
+    error.statusCode = 500;
+    throw error;
+  }
+}
+
+module.exports = { createOrder, userOrders, deleteUserOrders };

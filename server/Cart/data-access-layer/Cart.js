@@ -1,3 +1,4 @@
+const { default: mongoose } = require("mongoose");
 const CartSchema = require("./Cart.schema");
 
 async function saveCartToDB(UserId, _id, Price, Type, Date, Title) {
@@ -64,4 +65,48 @@ async function remove(UserId, _id) {
   }
 }
 
-module.exports = { saveCartToDB, cartById, remove };
+async function removeAllCart(UserId) {
+  try {
+    const cart = await cartById(UserId);
+
+    if (!cart) return null;
+
+    const deletedCart = await CartSchema.findOneAndDelete({ UserId });
+
+    return deletedCart;
+  } catch (error) {
+    error.message = "Failed to remove from cart";
+    error.isClientError = false;
+    error.statusCode = 500;
+    throw error;
+  }
+}
+
+async function removeTicketFromAnyCart(TicketId) {
+  try {
+    const ticketObjectId = new mongoose.Types.ObjectId(TicketId);
+
+    const result = await CartSchema.findOneAndUpdate(
+      { "Items._id": ticketObjectId },
+      { $pull: { Items: { _id: ticketObjectId } } },
+      { new: true }
+    );
+
+    return result;
+  } catch (error) {
+    console.error("[DEBUG] Error details:", error);
+
+    error.message = "Failed to remove from cart";
+    error.isClientError = false;
+    error.statusCode = 500;
+    throw error;
+  }
+}
+
+module.exports = {
+  saveCartToDB,
+  cartById,
+  remove,
+  removeAllCart,
+  removeTicketFromAnyCart,
+};

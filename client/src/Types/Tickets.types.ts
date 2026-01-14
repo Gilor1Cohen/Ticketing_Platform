@@ -9,6 +9,8 @@ interface Ticket {
   Date: string;
   Title: string;
   OrderId?: string;
+  Available?: boolean;
+  LockedIn?: null | Date;
 }
 
 interface TicketsRes {

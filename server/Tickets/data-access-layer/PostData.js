@@ -2,6 +2,9 @@ const TicketSchema = require("./Ticket.schema");
 
 async function postTicket(Title, Price, Date, Type, UserId) {
   try {
+    const Available = true;
+    const LockedIn = null;
+
     const addedTicket = await TicketSchema.create({
       Price,
       Type,
@@ -9,6 +12,8 @@ async function postTicket(Title, Price, Date, Type, UserId) {
       OrderId: null,
       Date,
       Title,
+      Available,
+      LockedIn,
     });
 
     if (!addedTicket._id) {

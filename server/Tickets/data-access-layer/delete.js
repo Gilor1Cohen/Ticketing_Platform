@@ -12,11 +12,24 @@ async function deleteTicket(TicketId) {
 
     return deleteTicket;
   } catch (error) {
-    error.message = "Error updating ticket: " + error.message;
+    error.message = "Error delete ticket";
     error.isClientError = true;
     error.statusCode = 400;
     throw error;
   }
 }
 
-module.exports = { deleteTicket };
+async function DeleteProfileFromDB(UserId) {
+  try {
+    const deleteTicket = await TicketSchema.deleteMany({ UserId: UserId });
+
+    return deleteTicket;
+  } catch (error) {
+    error.message = "Error delete tickets";
+    error.isClientError = true;
+    error.statusCode = 400;
+    throw error;
+  }
+}
+
+module.exports = { deleteTicket, DeleteProfileFromDB };

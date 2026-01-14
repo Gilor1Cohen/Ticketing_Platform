@@ -23,6 +23,10 @@ const TicketSchema = new Schema({
   Date: { type: Date, required: true },
 
   Title: { type: String, required: true },
+
+  Available: { type: Boolean, required: true, default: true },
+
+  LockedIn: { type: Date, required: false, default: null },
 });
 
-module.exports = mongoose.model("Tickets", TicketSchema);
+module.exports = mongoose.model("tickets", TicketSchema);

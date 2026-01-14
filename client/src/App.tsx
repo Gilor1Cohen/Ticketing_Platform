@@ -38,7 +38,7 @@ function App() {
     async function checkCart() {
       try {
         const check = await axios.get<{ cart: Ticket[] }>(
-          "http://localhost:3003/GetCart",
+          "http://localhost:3004/GetCart",
           {
             withCredentials: true,
           }
